@@ -1,7 +1,3 @@
-# LewisPacket
-My python usual packet
-
-
 # LinuxFileDeal
 some packets deal with linux file
 
