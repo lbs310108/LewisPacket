@@ -1,4 +1,5 @@
-import os
+from os import popen, system
+from sys import executable
 from subprocess import check_output
 
 # kill progress succeed return true
@@ -6,12 +7,14 @@ from subprocess import check_output
 
 
 def kill_progress(progress_name):
-    cmd = 'ps aux | grep {} | grep -v grep '.format(progress_name)
-    progress_num = len(os.popen(cmd).readline())
+    install_path = executable
+    cmd = 'ps aux | grep {} | grep -v grep | grep -v {}'.format(progress_name, install_path)
+    progress_num = len(popen(cmd).readline())
+    cmd_id = 'pidof {}'.format(progress_name)
     if progress_num >= 1:
-        get_progress_id = check_output(['pidof', progress_name])
+        get_progress_id = popen(cmd_id).readline()
         kill_progress_id_cmd = 'kill -9 {}'.format(get_progress_id)
-        os.system(kill_progress_id_cmd)
+        system(kill_progress_id_cmd)
         return True
     else:
         return False
@@ -24,7 +27,7 @@ def get_curdir_name(keywords):
     file_list = check_output(['ls']).split()
     for name in file_list:
         if keywords in name:
-            return name
+            print name
     return False
 
 
