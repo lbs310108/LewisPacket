@@ -3,6 +3,9 @@ import socket
 
 # variable
 INTERFACE = 'lo'
+IP = '192.168.31.205'
+bytes_target_ip_address = bytes.fromhex(IP.replace('.', ''))
+print(bytes_target_ip_address)
 
 # get local MAC and IP
 local_network_detail = netifaces.ifaddresses(INTERFACE)
@@ -24,8 +27,15 @@ protocol_size = b'\x04'
 opcode = b'\x00\x01'
 arp_reqeust_header = hardware_type + protocol_type + hardware_size + protocol_size + opcode
 
+# define arp body
+sender_mac_address = bytes_local_mac_address
+sender_ip_address = bytes_dest_mac_address
+target_mac_address = b'\00\00\00\00\00\00'
+target_ip_address = bytes_target_ip_address
+arp_reqest_body = sender_mac_address + sender_ip_address + target_mac_address + target_ip_address
+
 # make arp request
-arp_packet = fr_eth + arp_reqeust_header
+arp_packet = fr_eth + arp_reqeust_header + arp_reqest_body
 
 sk = socket.socket(socket.PF_PACKET, socket.SOCK_RAW)
 sk.bind((INTERFACE, 0))
