@@ -27,7 +27,7 @@ def get_curdir_name(keywords):
     file_list = check_output(['ls']).split()
     for name in file_list:
         if keywords in name:
-            print name
+            print(name)
     return False
 
 
